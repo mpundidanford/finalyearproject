@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('../includes/loanofficer/styles.ejs') %>
+
+    <body class="skin-black">
+        <!-- header logo: style can be found in header.less -->
+        <header class="header">
+            <a href="/" class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                <%=name %>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <div class="navbar-right">
+
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span><%=name %> <i class="caret"></i></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+
+
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+
+                                <div class="pull-right">
+                                    <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <!-- Left side column. contains the logo and sidebar -->
+            <%-include('../includes/loanofficer/sidebar.ejs')%>
+
+                <!-- Right side column. Contains the navbar and content of the page -->
+                <aside class="right-side ">
+                    <!-- Content Header (Page header) -->
+                    <section class="content-header ">
+                        <!-- DataTable for all beneficiary students -->
+
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title">List of postponed beneficiaries</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body table-responsive">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <%if (beneficiary.length >0) { %>
+                                        <thead>
+                                            <tr>
+                                                <th>Firstname</th>
+                                                <th>Middlename</th>
+                                                <th>Lastname</th>
+                                                <th>reg_no</th>
+                                                <th>Form four No</th>
+                                                <th>gender</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% beneficiary.forEach(row=> { %>
+                                                <tr>
+                                                    <td>
+                                                        <%= row.Firstname %>
+                                                    </td>
+                                                    <td>
+                                                        <%=row.Middlename %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.Lastname %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.reg_no %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.F4Index %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= row.gender %>
+                                                    </td>
+                                                    <td>
+                                                        <%= row.Status %>
+                                                    </td>
+                                                </tr>
+                                                <% })} else{ %>
+                                                    <p> no data</p>
+                                                    <% } %>
+
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Firstname</th>
+                                                                <th>Middlename</th>
+                                                                <th>Lastname</th>
+                                                                <th>reg_no</th>
+                                                                <th>Form four No</th>
+                                                                <th>Gender</th>
+                                                                <th>Status</th>
+                                                            </tr>
+                                                        </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+        </div>
+        </div>
+
+        </section>
+        <!-- /.content -->
+        </aside>
+        <!-- /.right-side -->
+        </div>
+        <!-- ./wrapper -->
+
+
+        <!-- jQuery 2.0.2 -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
+        <!-- DATA TABES SCRIPT -->
+        <script src="../../js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="../../js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <!-- AdminLTE App -->
+        <script src="../../js/AdminLTE/app.js" type="text/javascript"></script>
+
+        <!-- page script -->
+        <script type="text/javascript">
+            $(function() {
+                $("#example1").dataTable();
+                $('#example2').dataTable({
+                    "bPaginate": true,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bSort": true,
+                    "bInfo": true,
+                    "bAutoWidth": false
+                });
+            });
+        </script>
+
+    </body>
+
+</html>

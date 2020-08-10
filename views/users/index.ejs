@@ -1,0 +1,87 @@
+</head>
+
+<body>
+
+
+    <!-- HEADER -->
+    <header id="main-header" class="py-2 bg-primary text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h1>
+                        <i class="fas fa-cog"></i> Dashboard</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ACTIONS -->
+    <section id="actions" class="py-4 mb-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <a href="#" class="btn btn-primary btn-block" data-toggle="modal" data-target="#addPostModal">
+                        <i class="fas fa-plus"></i> Request for a Leave!
+                    </a>
+                </div>
+
+            </div>
+    </section>
+
+    <!-- POSTS -->
+    <section id="posts">
+        <div class="container">
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Leave History</h4>
+                        </div>
+
+
+
+                        <div class="modal fade" id="addPostModal">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-primary text-white">
+                                        <h5 class="modal-title">Request for a Leave</h5>
+                                        <button class="close" data-dismiss="modal">
+                                  <span>&times;</span>
+                                </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/upload" method="POST" enctype="multipart/form-data">
+                                            <div class="form-group">
+
+                                                <label for="document">Upload Document</label>
+                                                <input type="file" name="document" id="document">
+                                                <small class="form-text text-muted">Max Size 3mb!</small>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- FOOTER -->
+
+
+
+                        <!-- MODALS -->
+
+                        <!-- ADD POST MODAL -->
+
+                        <!-- ADD CATEGORY MODAL -->
+
+
+
+
+
+
+
+</body>
+
+</html>
