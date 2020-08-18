@@ -3,16 +3,12 @@ var router = express.Router();
 var passport = require('passport');
 var User = require('../models/user');
 var csrf = require('csurf');
-var csrfProtection = csrf();
-router.use(csrfProtection);
-
-
 
 router.get('/signup', function signUp(req, res, next) {
 
     var messages = req.flash('error');
     res.render('signup', {
-        csrfToken: req.csrfToken(),
+        // csrfToken: req.csrfToken(),
         messages: messages,
         hasErrors: messages.length > 0
     });
@@ -23,7 +19,7 @@ router.get('/', function viewLoginPage(req, res, next) {
 
     res.render('login', {
         title: 'Heslb',
-        csrfToken: req.csrfToken(),
+        // csrfToken: req.csrfToken(),
         messages: messages,
         hasErrors: messages.length > 0
     });

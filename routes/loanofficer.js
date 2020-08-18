@@ -9,11 +9,15 @@ var beneficiary = require("../models/beneficiary");
 const file = require('../models/files')
 const allocations = require('../models/allocations')
 var router = express.Router();
-var csrf = require('csurf')
-var csrfProtection = csrf({ cookie: true });
-router.use('/', isLoggedIn, function checkAuthentication(req, res, next) {
-    next();
-});
+var csrf = require('csurf');
+var csrfProtection = csrf();
+
+
+
+router.use('/', isLoggedIn,
+    function checkAuthentication(req, res, next) {
+        next();
+    });
 
 
 router.get('/', function viewHome(req, res, next) {
@@ -23,21 +27,14 @@ router.get('/', function viewHome(req, res, next) {
     })
 })
 
-router.use('/', isLoggedIn, function checkAuthentication(req, res, next) {
-    next();
-});
 
-router.get('/all', (req, res, next) => {
-    beneficiary.estimatedDocumentCount({}, function(err, result) {
 
-        if (err) {
-            res.send(err)
-        } else {
-            res.json(result)
-        }
+router.get('/update/:id', (req, res, next) => {
+    beneficiary.findOneAndUpdate({
 
     })
-    res.render('../views/UniversityOfficer/index.ejs', {
+
+    render('../views/UniversityOfficer/index.ejs', {
         result: result
     })
 
@@ -53,7 +50,7 @@ router.get('/view-all', (req, res, next) => {
         res.render('../views/UniversityOfficer/view_all.ejs', {
             beneficiary: row,
             name: 'loanOfficer',
-            csrfToken: req.csrfToken(),
+
 
         })
     });
@@ -69,8 +66,8 @@ router.get('/view-continuous', (req, res, next) => {
         res.render('../views/UniversityOfficer/continous.ejs', {
             beneficiary: row,
             name: 'loanOfficer',
-            csrfToken: req.csrfToken(),
-            userName: req.session.user
+
+
 
         });
 
@@ -120,7 +117,7 @@ router.get('/import', (req, res, next) => {
 
 
 
-router.post('/upload', csrfProtection, (req, res, next) => {
+router.post('/upload', (req, res) => {
     const document = req.file.filename;
 
     const files =
@@ -133,11 +130,11 @@ router.post('/upload', csrfProtection, (req, res, next) => {
         if (err) {
             console.log('no data in db entered')
         } else {
-            res.redirect('/send')
+            res.redirect('/loanofficer/send')
         }
         res.render('../views/UniversityOfficer/send.ejs', {
 
-            csrfToken: req.csrfToken(),
+
         })
     })
 
@@ -216,14 +213,25 @@ router.get('/send', function(req, res, next) {
         .then(row => {
             res.render('../views/UniversityOfficer/send.ejs', {
                 title: 'Express',
-                csrfToken: req.csrfToken(),
+
                 name: 'loanOfficer',
                 files: row
             });
         })
 
 });
-router.get('/file/:id', (req, res, next) => {
+// router.post('/delete-file/:id', function deletefile(req, res) {
+//     var id = req.params.id;
+//     file.findByIdAndRemove({ _id: id }, function deletefile(err) {
+//         if (err) {
+//             console.log('unable to delete file');
+//         } else {
+//             res.redirect('/loanofficer/send')
+//         }
+//     });
+// });
+router.delete('/file/:id', (req, res, next) => {
+
     file.findOneAndDelete({ _id: req.params.id }, function(err, done) {
         if (err) {
             console.log(err)
@@ -231,7 +239,7 @@ router.get('/file/:id', (req, res, next) => {
             console.log(done)
         }
     }).then(row => {
-        res.redirect('/send')
+        res.redirect('/loanofficer/send')
     })
 
 });
@@ -285,6 +293,7 @@ router.put("/beneficiary/:id", function(req, res) {
     });
 });
 
+// PDF REPORT
 
 
 

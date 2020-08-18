@@ -1,15 +1,14 @@
 var express = require('express')
 var fs = require('fs')
 var multer = require('multer')
-    // var csv = require('fast-csv')
 var mongoose = require('mongoose')
 var beneficiary = require('../models/beneficiary')
 var students = require('../models/beneficiary')
+
 var moment = require('moment')
 var allocation = require('../models/allocations')
-    // var pdfkit = require('pdfkit')
 var bodyPerser = require('body-parser')
-const file = require('../models/files')
+    // const file = require('../models/files')
 const files = require('../models/files')
 var router = express.Router();
 
@@ -34,7 +33,9 @@ router.get('/import-Beneficiary', (req, res, next) => {
 });
 router.get('/send-Allocation', (req, res, next) => {
     res.render('../views/Loanboard/sendAllocation.ejs', {
-        name: 'loanOfficer'
+        name: 'loanOfficer',
+        // csrfToken: req.csrfToken()
+
     })
 });
 router.get('/received-Beneficiary', (req, res, next) => {
@@ -65,7 +66,10 @@ router.post('/upload', (req, res, next) => {
         } else {
             res.redirect('/send-Allocation')
         }
-        res.render('../views/Loanboard/sendAllocation.ejs')
+        res.render('../views/Loanboard/sendAllocation.ejs', {
+
+            moment: moment
+        })
     })
 
 })

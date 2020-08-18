@@ -6,7 +6,7 @@
     <body class="skin-black">
         <!-- header logo: style can be found in header.less -->
         <header class="header">
-            <a href="index.html" class="logo">
+            <a href="#" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 Loan Offcer
             </a>
@@ -74,6 +74,7 @@
                         <!-- add new apload model modal -->
                         <!-- add new apload model modal -->
                         <div class="modal" id="myModal">
+
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
@@ -85,16 +86,19 @@
 
                                     <!-- Modal body -->
                                     <div class="modal-body">
-                                        <form action="/upload" method="POST" enctype="multipart/form-data">
+                                        <form action="/loanboard/upload" method="POST" enctype="multipart/form-data">
+
                                             <div class="container">
                                                 <label class="custom-file" id="customFile">
-                                <input type="file" class="custom-file-input" id="document" aria-describedby="fileHelp" name="document"> 
-                                <span class="custom-file-control form-control-file"></span>
-                            </label>
+                                         <input type="file" class="custom-file-input" id="document" aria-describedby="fileHelp" name="document"> 
+                                         
+                                                   <span class="custom-file-control form-control-file"></span>
+                                         </label>
                                             </div>
                                             <!-- Modal footer -->
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                <input type="hidden" name="_csrf" value="<%=csrfToken%>">
                                                 <button type="submit" class="btn btn-primary btn-lg">upload</button>
                                             </div>
 
@@ -134,6 +138,7 @@
 
                         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
                         <script src="/js/AdminLTE/dashboard.js " type="text/javascript "></script>
+
 
     </body>
 

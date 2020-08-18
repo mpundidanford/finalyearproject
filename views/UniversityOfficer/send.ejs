@@ -63,8 +63,11 @@
                             <div class="box-header">
                                 <h3 class="box-title">List of sended files</h3>
                             </div>
+
+
                             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                         upload new files
+                        
                       </button>
                             <!-- /.box-header -->
                             <div class="box-body table-responsive">
@@ -88,9 +91,10 @@
                                                         <%=row.date %>
                                                     </td>
                                                     <td>
-                                                        <a href="/file/<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a>
-                                                        <a href="/download/<%=row._id%>"> <button type="button" class="btn btn-primary">download</button></a>
-                                                    </td>
+                                                        <td style="padding: 0%;">
+                                                            <a href="/loanofficer/file/:id<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a>
+                                                            <a href="/download/<%=row._id%>"> <button type="button" class="btn btn-primary">download</button></a>
+                                                        </td>
 
 
                                                 </tr>
@@ -128,20 +132,15 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <form action="/loanofficer/upload" method="POST" enctype="multipart/form-data">
-
-                            <div class="container">
-                                <label class="custom-file" id="customFile">
-                                <input type="file" class="custom-file-input" id="document" aria-describedby="fileHelp" name="document" > 
-                                <span class="custom-file-control form-control-file"></span>
-                            </label>
+                            <div class="form-group">
+                                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                                <label for="document">Upload Material </label>
+                                <input type="file" name="document" id="document" required="required">
+                                <small class="form-text text-muted">Max Size 3mb!</small>
                             </div>
-                            <!-- Modal footer -->
                             <div class="modal-footer">
-                                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary btn-lg">upload</button>
+                                <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
-
                         </form>
                     </div>
 
@@ -219,6 +218,26 @@
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="/js/AdminLTE/dashboard.js " type="text/javascript "></script>
 
+
+
+        <!-- <script>
+            var fileId;
+            $(document).ready(function() {
+                $("#example").on('click', '.deletefile', function() {
+                    $('#type').text($(this).parents().closest('tr').find('td:eq(0)').text());
+                    $('#period').text($(this).parents().closest('tr').find('td:eq(1)').text());
+                });
+
+                $(document).on("click", ".delete-button", function() {
+                    fileId = (this.id);
+                    document.getElementById("modal-delete-form").action = "/loanofficer/delete-file/" + fileId;
+
+                });
+
+
+            });
+        </script> -->
     </body>
+
 
 </html>
