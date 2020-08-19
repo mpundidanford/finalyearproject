@@ -183,25 +183,25 @@ router.get('/receive/', function(req, res, next) {
 });
 
 
-router.get('/allocation/:id', (req, res, next) => {
-    allocations.find({ _id: req.params.id }, (err, done) => {
-        if (err) {
-            console.log(err)
-        } else {
+// router.get('/allocation/:id', (req, res, next) => {
+//     allocations.find({ _id: req.params.id }, (err, done) => {
+//         if (err) {
+//             console.log(err)
+//         } else {
 
-            var downloadPath = path.join(__dirname, '/documents', req.params.id);
-            res.download(downloadPath, function(err) {
-                if (err) {
-                    console.log("try again")
-                } else {
-                    console.log("download success full");
-                    console.log(done)
-                    next();
-                }
-            });
-        }
-    })
-})
+//             var downloadPath = path.join(__dirname, '/documents', req.params.id);
+//             res.download(downloadPath, function(err) {
+//                 if (err) {
+//                     console.log("try again")
+//                 } else {
+//                     console.log("download success full");
+//                     console.log(done)
+//                     next();
+//                 }
+//             });
+//         }
+//     })
+// })
 
 
 
@@ -230,7 +230,7 @@ router.get('/send', function(req, res, next) {
 //         }
 //     });
 // });
-router.delete('/file/:id', (req, res, next) => {
+router.get('/file/:id', (req, res, next) => {
 
     file.findOneAndDelete({ _id: req.params.id }, function(err, done) {
         if (err) {
@@ -259,53 +259,62 @@ router.get('/result', function(req, res, next) {
 
 
 });
-
+console.log(path.join(require.main.filename + '/../documents/'))
 
 
 //edit and save details
-router.get("/benefeciary", function(req, res) {
-    benefeciary.find({}, function(err, benefeciary) {
-        if (err) {
-            throw err;
-        } else {
-            res.render("beneficiary", { benefeciary: benefeciary });
-        }
+// router.get("/benefeciary", function(req, res) {
+//     benefeciary.find({}, function(err, benefeciary) {
+//         if (err) {
+//             throw err;
+//         } else {
+//             res.render("beneficiary", { benefeciary: benefeciary });
+//         }
+//     });
+// });
+// router.get("/beneficiary/:id/", function(req, res) {
+//     benefeciary.findById(req.params.id, function(err, benefeciary) {
+//         if (err) {
+//             throw err;
+//             res.redirect("/upload/beneficiary");
+//         } else {
+//             res.render("edit", { benefeciary: benefeciary });
+//         }
+//     });
+// });
+// router.put("/beneficiary/:id", function(req, res) {
+//     benefeciary.findByIdAndUpdate(req.params.id, req.body.benefeciary, function(err, updateData) {
+//         if (err) {
+//             throw err;
+//             res.redirect("/upload/beneficiary");
+//         } else {
+//             res.redirect("/upload/beneficiary");
+//         }
+//     });
+// });
+console.log(path.join(require.main.filename + '/../documents/'))
+
+router.post('/download/:file', (req, res) => {
+    let { file } = req.body;
+
+
+    var pp = path.join(require.main.filename + `${'/../documents/'+file}`)
+    res.download(pp, error => {
+        console.log('file failed to download', +error)
     });
-});
-router.get("/beneficiary/:id/", function(req, res) {
-    benefeciary.findById(req.params.id, function(err, benefeciary) {
-        if (err) {
-            throw err;
-            res.redirect("/upload/beneficiary");
-        } else {
-            res.render("edit", { benefeciary: benefeciary });
-        }
+
+})
+router.post('/download/:allocations', (req, res) => {
+    let { allocations } = req.body;
+
+
+    var pp = path.join(require.main.filename + `${'/../documents/'+allocations}`)
+    res.download(pp, error => {
+        console.log('file failed to download', +error)
     });
-});
-router.put("/beneficiary/:id", function(req, res) {
-    benefeciary.findByIdAndUpdate(req.params.id, req.body.benefeciary, function(err, updateData) {
-        if (err) {
-            throw err;
-            res.redirect("/upload/beneficiary");
-        } else {
-            res.redirect("/upload/beneficiary");
-        }
-    });
-});
 
-// PDF REPORT
-
-
-
+})
 module.exports = router;
-
-function isLoggedIn(req, res, next) {
-
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}
 
 function isLoggedIn(req, res, next) {
 

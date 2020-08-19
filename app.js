@@ -119,6 +119,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error');
 });
+console.log(path.join(require.main.filename + '/../documents/'))
 app.listen(7000, (err) => {
     if (err) {
         console.log('server is not started')

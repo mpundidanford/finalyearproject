@@ -8,7 +8,7 @@ router.get('/signup', function signUp(req, res, next) {
 
     var messages = req.flash('error');
     res.render('signup', {
-        // csrfToken: req.csrfToken(),
+        csrfToken: req.csrfToken(),
         messages: messages,
         hasErrors: messages.length > 0
     });

@@ -75,8 +75,8 @@
                                     <%if (files.length >0) { %>
                                         <thead>
                                             <tr>
-                                                <th>Firstname</th>
-                                                <th>Middlename</th>
+                                                <th>File</th>
+                                                <th>date</th>
                                                 <th>Action</th>
 
                                             </tr>
@@ -91,10 +91,14 @@
                                                         <%=row.date %>
                                                     </td>
                                                     <td>
-                                                        <td style="padding: 0%;">
-                                                            <a href="/loanofficer/file/:id<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a>
-                                                            <a href="/download/<%=row._id%>"> <button type="button" class="btn btn-primary">download</button></a>
-                                                        </td>
+                                                        <a href="/loanofficer/file/<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a>
+                                                        <form action="/loanofficer/download/<%=row.file%> " method="post">
+                                                            <input type="hidden" name="_csrf" value="<%= csrf %>">
+                                                            <button type="submit" value="<%=row.file%>">download</button>
+                                                            <input type="submit" name="file" value="<%=row.file %>">
+                                                        </form>
+
+                                                    </td>
 
 
                                                 </tr>
@@ -132,10 +136,10 @@
                     <!-- Modal body -->
                     <div class="modal-body">
                         <form action="/loanofficer/upload" method="POST" enctype="multipart/form-data">
-                            <div class="form-group">
+                            <div class="form-group" id="Only_csv">
                                 <input type="hidden" name="_csrf" value="<%= csrf %>">
                                 <label for="document">Upload Material </label>
-                                <input type="file" name="document" id="document" required="required">
+                                <input type="file" name="document" id="document" required="required" accept="file/csv">
                                 <small class="form-text text-muted">Max Size 3mb!</small>
                             </div>
                             <div class="modal-footer">
@@ -237,6 +241,24 @@
 
             });
         </script> -->
+        <script>
+            var myfile = "";
+
+            $('#resume_link').click(function(e) {
+                e.preventDefault();
+                $('#resume').trigger('click');
+            });
+
+            $('#resume').on('change', function() {
+                myfile = $(this).val();
+                var ext = myfile.split('.').pop();
+                if (ext == "pdf" || ext == "docx" || ext == "doc") {
+                    alert(ext);
+                } else {
+                    alert(ext);
+                }
+            });
+        </script>
     </body>
 
 

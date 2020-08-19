@@ -81,7 +81,11 @@
                                                                     </td>
                                                                     <td>
 
-                                                                        <a href="/allocation/<%=row._id%>"> <button type="button" class="btn btn-primary">download</button></a>
+                                                                        <form action="/loanofficer/download/<%=row.allocation%> " method="post">
+                                                                            <input type="hidden" name="_csrf" value="<%= csrf %>">
+                                                                            <input type="submit" name="file" value="<%=row.allocation %>">
+                                                                        </form>
+                                                                    </td>
                         </form>
                         </td>
                         </tr>
