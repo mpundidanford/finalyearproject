@@ -66,7 +66,7 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <table class="table table-bordered">
-                                                            <h1>Result from Aris</h1>
+                                                            <h1> Aris Data</h1>
                                                             <% if (files.length> 0) { %>
                                                                 <thead>
                                                                     <tr>
@@ -85,9 +85,14 @@
 
                                                                             </td>
                                                                             <td>
+                                                                                <!-- <a href="/loanofficer/send/delete/<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a> -->
 
-                                                                                <button type="button" class="btn btn-success">Download</button>
-                                                                                <button type="button" class="btn btn-primary">Approve</button>
+                                                                                <form action="/loanofficer/download/<%=row.file%>" method="post">
+                                                                                    <input type="hidden" name="_csrf" value="<%= csrf %>">
+                                                                                    <button type="submit" name="file" value="<%=row.file%>">download</button>
+
+                                                                                </form>
+
                                                                             </td>
                                                                         </tr>
                                                                         <% })} else{ %>

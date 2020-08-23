@@ -7,7 +7,14 @@ var fs = require('fs')
 const { count } = require('../models/beneficiary');
 var beneficiary = require("../models/beneficiary");
 const file = require('../models/files')
+const files = require('../models/files')
 const allocations = require('../models/allocations')
+const pdfMake = require('../config/pdfmake');
+const PDFDocument = require('pdfkit')
+const vfsFonts = require('../config/vsf_font');
+
+const exceljs =
+    require('exceljs');
 var router = express.Router();
 var csrf = require('csurf');
 var csrfProtection = csrf();
@@ -230,16 +237,15 @@ router.get('/send', function(req, res, next) {
 //         }
 //     });
 // });
-router.get('/file/:id', (req, res, next) => {
-
-    file.findOneAndDelete({ _id: req.params.id }, function(err, done) {
+router.get('/file/:id', async(req, res, next) => {
+    file.findOneAndDelete(await { _id: req.params.id }, function(err, done) {
         if (err) {
             console.log(err)
         } else {
             console.log(done)
         }
     }).then(row => {
-        res.redirect('/loanofficer/send')
+        res.redirect('/loanofficer/send/')
     })
 
 });
@@ -263,35 +269,35 @@ console.log(path.join(require.main.filename + '/../documents/'))
 
 
 //edit and save details
-// router.get("/benefeciary", function(req, res) {
-//     benefeciary.find({}, function(err, benefeciary) {
-//         if (err) {
-//             throw err;
-//         } else {
-//             res.render("beneficiary", { benefeciary: benefeciary });
-//         }
-//     });
-// });
-// router.get("/beneficiary/:id/", function(req, res) {
-//     benefeciary.findById(req.params.id, function(err, benefeciary) {
-//         if (err) {
-//             throw err;
-//             res.redirect("/upload/beneficiary");
-//         } else {
-//             res.render("edit", { benefeciary: benefeciary });
-//         }
-//     });
-// });
-// router.put("/beneficiary/:id", function(req, res) {
-//     benefeciary.findByIdAndUpdate(req.params.id, req.body.benefeciary, function(err, updateData) {
-//         if (err) {
-//             throw err;
-//             res.redirect("/upload/beneficiary");
-//         } else {
-//             res.redirect("/upload/beneficiary");
-//         }
-//     });
-// });
+router.get("/benefeciary", function(req, res) {
+    benefeciary.find({}, function(err, benefeciary) {
+        if (err) {
+            throw err;
+        } else {
+            res.render("beneficiary", { benefeciary: benefeciary });
+        }
+    });
+});
+router.get("/beneficiary/:id/", function(req, res) {
+    benefeciary.findById(req.params.id, function(err, benefeciary) {
+        if (err) {
+            throw err;
+            res.redirect("/upload/beneficiary");
+        } else {
+            res.render("edit", { benefeciary: benefeciary });
+        }
+    });
+});
+router.put("/beneficiary/:id", function(req, res) {
+    benefeciary.findByIdAndUpdate(req.params.id, req.body.benefeciary, function(err, updateData) {
+        if (err) {
+            throw err;
+            res.redirect("/upload/beneficiary");
+        } else {
+            res.redirect("/upload/beneficiary");
+        }
+    });
+});
 console.log(path.join(require.main.filename + '/../documents/'))
 
 router.post('/download/:file', (req, res) => {
@@ -303,7 +309,7 @@ router.post('/download/:file', (req, res) => {
         console.log('file failed to download', +error)
     });
 
-})
+});
 router.post('/download/:allocations', (req, res) => {
     let { allocations } = req.body;
 
@@ -314,6 +320,130 @@ router.post('/download/:allocations', (req, res) => {
     });
 
 })
+
+router.get('/loanofficer/generate', async(req, res, next) => {
+    const startDate = moment(new Date()).startOf('month').toDate();
+    const endDate = moment(new Date()).endOf('month').toDate();
+    try {
+        const files = await file.find({ created_at: { $gte: startDate, $lte: endDate } });
+        const workbook = new ExcelJs.Workbook();
+        const worksheet = workbook.addWorksheet('/documents');
+        worksheet.columns = [
+            { header: 'File', key: 'file', width: 100 },
+            { header: 'Date', key: 'date', width: 10 },
+
+        ];
+        let count = 1;
+        files.forEach(file => {
+            (file).s_no = count;
+            worksheet.addRow(file);
+            count += 1;
+        });
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.font = { bold: true };
+        });
+        const data = await workbook.xlsx.writeFile('file.xlsx')
+        res.send('done');
+    } catch (e) {
+        res.status(500).send(e);
+    }
+    res.render('../views/UniversityOfficer/manage.ejs')
+})
+
+router.post('/pdf', (req, res, next) => {
+    file.find({
+
+    })
+    var documentDefinition = {
+        content: [
+
+        ]
+    };
+
+    const pdfDoc = pdfMake.createPdf(documentDefinition);
+    pdfDoc.getBase64((data) => {
+        res.writeHead(200, {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': 'attachment;filename="filename.pdf"'
+        });
+
+        const download = Buffer.from(data.toString('utf-8'), 'base64');
+        res.end(download);
+    });
+
+});
+router.get("/generatePdf/:id", async(req, res, next) => {
+    const id = req.params.id;
+    const documents = await file.findAll({ where: { id } });
+    const document = file[0];
+    const stream = await new Promise((resolve, reject) => {
+        pdf.create(document.file).toStream((err, stream) => {
+            if (err) {
+                reject(reject);
+                return;
+            }
+            resolve(stream);
+        });
+    });
+    const fileName = `${+new Date()}.pdf`;
+    const pdfPath = `${__dirname}/../../documents${fileName}`;
+    stream.pipe(fs.createWriteStream(pdfPath));
+    const doc = await file.update({ pdfPath: fileName }, { where: { id } });
+    res.json(doc);
+});
+
+router.get('/pdf', function(req, res, next) {
+
+    var id = req.query.id;
+
+    const doc = new PDFDocument();
+
+    var result = req.models.file.find({ id: id }, function(error, file) {
+
+        if (error) throw error;
+
+        var file = req.body.file;
+
+        var date = req.body.date;
+
+        var filename = encodeURIComponent(title) + '.pdf';
+
+        res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
+
+        res.setHeader('Content-type', 'application/pdf');
+
+        doc.font('Times-Roman', 18)
+            .fontSize(25)
+            .text(title, 100, 50);
+
+        doc.fontSize(15)
+            .fillColor('blue')
+            .text('Read Full Article', 100, 100)
+            .link(100, 100, 160, 27, link);
+
+        doc.moveDown()
+            .fillColor('red')
+            .text("Author: " + author_name);
+
+        doc.moveDown()
+            .fillColor('black')
+            .fontSize(15)
+            .text(content, {
+                align: 'justify',
+                indent: 30,
+                height: 300,
+                ellipsis: true
+            });
+
+        doc.pipe(res);
+
+        doc.end();
+    })
+    res.redirect('../views/UniversityOfficer/manage.ejs', {
+        file: row
+    })
+});
+
 module.exports = router;
 
 function isLoggedIn(req, res, next) {

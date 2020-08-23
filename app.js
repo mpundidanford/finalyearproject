@@ -1,7 +1,6 @@
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
-// var utilPath = require('./util/path')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -120,11 +119,11 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 console.log(path.join(require.main.filename + '/../documents/'))
-app.listen(7000, (err) => {
+app.listen(8000, (err) => {
     if (err) {
         console.log('server is not started')
     } else {
-        console.log('server has started at port 5000')
+        console.log('server has started at port 8000')
     }
 })
 

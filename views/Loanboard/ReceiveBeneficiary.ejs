@@ -85,8 +85,8 @@
                                                                             <form action="/loanboard/download/<%=row.file%> " method="post">
 
                                                                                 <input type="hidden" name="_csrf" value="<%= csrf %>">
-
-                                                                                <input type="submit" name="file" value="<%=row.file %>">
+                                                                                <button type="submit" name="file" value="<%=row.file%>">download</button>
+                                                                                <!-- <input type="submit" name="file" value="<%=row.file %>"> -->
                                                                             </form>
                                                                         </td>
                                                                         <td>

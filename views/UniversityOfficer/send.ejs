@@ -66,7 +66,7 @@
 
 
                             <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                        upload new files
+                        send new names
                         
                       </button>
                             <!-- /.box-header -->
@@ -78,6 +78,7 @@
                                                 <th>File</th>
                                                 <th>date</th>
                                                 <th>Action</th>
+                                                <th>Status</th>
 
                                             </tr>
                                         </thead>
@@ -91,13 +92,19 @@
                                                         <%=row.date %>
                                                     </td>
                                                     <td>
-                                                        <a href="/loanofficer/file/<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a>
-                                                        <form action="/loanofficer/download/<%=row.file%> " method="post">
+                                                        <a href="/loanofficer/file<%=row._id%>"> <button type="button" class="btn btn-danger">delete</button></a>
+
+
+
+                                                        <form action="/loanofficer/download/<%=row.file%>" method="post">
                                                             <input type="hidden" name="_csrf" value="<%= csrf %>">
-                                                            <button type="submit" value="<%=row.file%>">download</button>
-                                                            <input type="submit" name="file" value="<%=row.file %>">
+                                                            <button type="submit" name="file" value="<%=row.file%>">download</button>
+
                                                         </form>
 
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary">sended</button>
                                                     </td>
 
 
@@ -138,12 +145,12 @@
                         <form action="/loanofficer/upload" method="POST" enctype="multipart/form-data">
                             <div class="form-group" id="Only_csv">
                                 <input type="hidden" name="_csrf" value="<%= csrf %>">
-                                <label for="document">Upload Material </label>
+                                <label for="document">send new names </label>
                                 <input type="file" name="document" id="document" required="required" accept="file/csv">
                                 <small class="form-text text-muted">Max Size 3mb!</small>
                             </div>
                             <div class="modal-footer">
-                                <button class="btn btn-primary" type="submit">Submit</button>
+                                <button class="btn btn-primary" type="submit">upload and send</button>
                             </div>
                         </form>
                     </div>

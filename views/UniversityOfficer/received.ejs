@@ -83,34 +83,33 @@
 
                                                                         <form action="/loanofficer/download/<%=row.allocation%> " method="post">
                                                                             <input type="hidden" name="_csrf" value="<%= csrf %>">
-                                                                            <input type="submit" name="file" value="<%=row.allocation %>">
+                                                                            <!-- <input type="submit" name="file" value="<%=row.allocation %>"> -->
+                                                                            <button type="submit" name="file" value="<%=row.allocation %>">download</button>
                                                                         </form>
                                                                     </td>
-                        </form>
-                        </td>
-                        </tr>
-                        <td>
+                                                                </tr>
+                                                                <td>
 
-                        </td>
-                        <td>
-                            <!-- <button type="button" class="btn btn-primary">Approve</button> -->
-                        </td>
-                        </tr>
-                        <% })} else{ %>
-                            <p> no data</p>
-                            <% } %>
+                                                                </td>
+                                                                <td>
+                                                                    <!-- <button type="button" class="btn btn-primary">Approve</button> -->
+                                                                </td>
+                                                                </tr>
+                                                                <% })} else{ %>
+                                                                    <p> no data</p>
+                                                                    <% } %>
 
 
-                                <tbody>
+                                                                        <tbody>
 
 
-                                </tbody>
+                                                                        </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </table>
-                                </div>
-                                </div>
-                                </div>
-                                </table>
-                                </div>
+                            </div>
 
         </div>
         </form>
